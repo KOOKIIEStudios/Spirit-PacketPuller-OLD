@@ -1,14 +1,16 @@
 # Spirit-PacketPuller
-**A GUI implementation of [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller), for the Spirit Suite of server development tools.**
+A GUI implementation of [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller), for the ***Spirit Suite*** of server development tools.
 ---
 # Info
 
-Features and known issues inherited from [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller)
+Features and known issues have been inherited from [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller).
+  *(To be updated as development continues)*
 ## Features:
  - Reads keywords from IDA-generated pseudocode, and formats them into a form that is friendly for server encodes
  - Options for varying the accuracy of packet structure pulls
  - Shows the structure of packets
- - Writes all packet structures to an identically named output file in `MaplePacketPuller/IDA Maple Script/FuncOutput/`
+ - Writes all packet structures to an identically named output file in <del>`MaplePacketPuller/IDA Maple Script/FuncOutput/`</del>
+   - *IO folders to be specified later*
  - Ability to search for InHeader opcodes
  
   
@@ -24,6 +26,7 @@ Features and known issues inherited from [MaplePacketPuller](https://github.com/
 |  | Target | Tested |
 | --- | --- | --- |
 | Python | 3.8.5 | 3.8.5 |
+| PyQt5 | 5.15.1 | 5.15.1 |
 | IDA Pro 32-bit | 7.0 | 7.0 |
 | IDE/Text Editor | PyCharm Community Edition 2020.1.1 | Notepad++ v7.8.9 |
 | CLI Interpretor | pwsh 7.0.3 | pwsh 6 |
@@ -33,9 +36,14 @@ Other variants for contributors to test:
     - **NOT COMPATIBLE:** use of os.scandir() makes it non-backwards compatible with versions older than 3.6
   - [x] Python 3.6
     - **NOT COMPATIBLE:** probably a result of how f-strings handle backslashes
+  - [ ] PyQt5 5.9.2 or earlier
   - [ ] IDA 6.8
   - [ ] IDA 7.5
 
 ---
 # How to use
-**Left blank until prototype completion**
+***Intentionally left mostly blank until prototype completion***
+
+**INPUT:**  `.txt` file containing C-pseudocode from IDA disassembly
+
+**OUTPUT:**  `.txt` file containing packet structure
