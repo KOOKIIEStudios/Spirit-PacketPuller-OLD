@@ -62,7 +62,7 @@ Other variants for contributors to test:
 
 Current Folder Structure:
 
-![Current Folder Structure](https://imgur.com/q3KX7xY)
+![](https://i.imgur.com/q3KX7xY.png)
 
 ---
 # How to use
