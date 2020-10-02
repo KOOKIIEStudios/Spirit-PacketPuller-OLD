@@ -35,8 +35,8 @@ Developmental Progress: ![5%](https://progress-bar.dev/5)
 | fbs | 0.9.0 | 0.9.0 |
 | [NSIS](http://nsis.sourceforge.net/Main_Page) | 3.0.5 | 3.0.5 |
 | IDA Pro 32-bit | 7.0 | 7.0 |
-| IDE/Text Editor | PyCharm Community Edition 2020.1.1 | Notepad++ v7.8.9 |
-| CLI Interpretor | pwsh 7.0.3 | pwsh 6 |
+| IDE/Text Editor | [PyCharm Community Edition 2020.1.1](https://www.jetbrains.com/pycharm/download) | [Notepad++ v7.8.9](https://notepad-plus-plus.org/downloads/) |
+| CLI Interpretor | [pwsh 7.0.3](https://github.com/PowerShell/PowerShell/releases/tag/v7.0.3) | Windows PowerShell 5.1 |
 
 Other variants for contributors to test:
   - [x] Python 2.7
@@ -59,6 +59,11 @@ Other variants for contributors to test:
   - Use `pip install wheel`, if the above commands throw errors
   - You can run the application from source code using `fbs run`
 - NSIS is only required if you wish to create installers for Windows (i.e. only for me to build for releases)
+
+Current Folder Structure:
+
+![Current Folder Structure](https://imgur.com/q3KX7xY)
+
 ---
 # How to use
 
