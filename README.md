@@ -49,10 +49,14 @@ Other variants for contributors to test:
   - [ ] IDA 7.5
 
 ### Technical Notes:
-- `Python 3.6.12` does not have official installers available, and requires building from source code.
-  - See [this repository](https://github.com/KOOKIIEStudios/ToolArchive) for the installer I compiled for my own use.
-- `PyQt5 5.9.2` and `fbs 0.9.0` should already be part of the venv
-  - You can activate the virtual environment using `call venv\scripts\activate.bat`
+- `Python 3.6.12` does not have official installers available, and requires building from source code. I tried building an installer from source but it refused to work.
+  - See [this repository](https://github.com/KOOKIIEStudios/ToolArchive) for the unofficial installer I obtained from elsewhere for my own personal use.
+  - <del>`PyQt5 5.9.2` and `fbs 0.9.0` should already be part of the venv</del> *venv added to `.gitignore`*
+  - You can create a virtual environment using `Python -m venv venv`
+  - You can activate the virtual environment using `call venv\scripts\activate.bat` in Command Prompt
+  - Alternatively, you can activate the virtual environment using `& venv\scripts\activate.ps1` in Power Shell - which is what I use
+  - Use `pip install fbs` and `pip install PyQt5==5.9.2` while the venv is activated to install to the virtual environment
+  - Use `pip install wheel`, if the above commands throw errors
   - You can run the application from source code using `fbs run`
 - NSIS is only required if you wish to create installers for Windows (i.e. only for me to build for releases)
 ---
