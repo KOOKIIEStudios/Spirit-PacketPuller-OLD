@@ -5,6 +5,11 @@ A GUI implementation of [MaplePacketPuller](https://github.com/Bratah123/MaplePa
 
 Features and known issues have been inherited from [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller).
   *(To be updated as development continues)*
+
+Developmental Progress: ![5%](https://progress-bar.dev/5)
+
+[Milestones](https://github.com/KOOKIIEStudios/Spirit-PacketPuller/milestones?with_issues=no)
+
 ## Features:
  - Reads keywords from IDA-generated pseudocode, and formats them into a form that is friendly for server encodes
  - Options for varying the accuracy of packet structure pulls
