@@ -6,3 +6,7 @@ BAUH_PATH = "../resources/BAUHS93.TTF"
 FORTE_PATH = "../resources/FORTE.TTF"
 GARA_PATH = "../resources/GARA.TTF"
 GARABD_PATH = "../resources/GARABD.TTF"
+
+# Logger consts
+FORMAT = "%(asctime)s — %(name)s — %(levelname)s — %(message)s"
+LOG_FILE = "spirit_packetpuller.log"
