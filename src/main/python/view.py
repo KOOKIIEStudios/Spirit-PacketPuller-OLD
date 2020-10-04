@@ -3,7 +3,7 @@
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src.main.python import constants, logger
+from src.main.python import model, engine, constants, logger
 from src.main.python.main import spirit_logger as main_logger
 
 spirit_logger = logger.get_logger("main.view")
@@ -15,8 +15,15 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         spirit_logger.debug("Initialising MainWindow...")
         self.setupUi(self)
+
+        self.inputListModel = model.InputListModel()
+        self.loadInputList()  # Load processable files into list
+        self.inputList.setModel(self.inputListModel)
+
         spirit_logger.debug("Finished setting GUI of MainWindow")
         self.debugModeCheckBox.stateChanged.connect(lambda: self.loggerState(self.debugModeCheckBox))
+
+        self.refreshButton.pressed.connect(lambda: self.loadInputList())
 
     # initialise the UI of the main window
     # wholesale imported from Qt Designer - make changes via Qt Designer, not hard-coding
@@ -179,3 +186,15 @@ class MainWindow(QMainWindow):
             self.turnLoggerOn()
         else:
             self.turnLoggeroff()
+
+    def loadInputList(self):
+        try:
+            func_list = engine.get_func_list()
+            for element in func_list:
+                self.inputListModel.files.append(element)
+            self.inputList.layoutChanged.emit()  # refresh the list
+        except OSError as e:
+            spirit_logger.error(f"OS Error: {e}")
+        except:
+            spirit_logger.error(f"Failed to load list of files from the following directory: {constants.FUNC_DIR}")
+

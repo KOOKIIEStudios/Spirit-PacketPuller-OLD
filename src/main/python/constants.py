@@ -7,6 +7,10 @@ FORTE_PATH = "../resources/FORTE.TTF"
 GARA_PATH = "../resources/GARA.TTF"
 GARABD_PATH = "../resources/GARABD.TTF"
 
-# Logger consts
+# Logger Constants
 FORMAT = "%(asctime)s — %(name)s — %(levelname)s — %(message)s"
 LOG_FILE = "spirit_packetpuller.log"
+
+# Engine Constants
+FUNC_DIR = "Functions"
+FUNC_OUTPUT_DIR = "FuncOutput"

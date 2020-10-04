@@ -27,13 +27,10 @@ class NullHandler(logging.Handler):
 def get_logger(logger_name):
 	logger = logging.getLogger(logger_name)
 	logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
-	h = NullHandler()
-	logger.addHandler(h)
-	# with this pattern, it's rarely necessary to propagate the error up to parent
-	logger.propagate = False
+	h = NullHandler()  # Instantiate with a silent handler that doesn't return anything, since
+	logger.addHandler(h)  # the logger object from the logging module REQUIRES at least ONE handler
 	return logger
 
 
 def shutdown_logger():
-	spirit_logger.info("Shutting down logger...")
 	logging.shutdown()

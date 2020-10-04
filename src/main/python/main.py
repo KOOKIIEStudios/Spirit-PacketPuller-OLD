@@ -15,7 +15,7 @@ spirit_logger = logger.get_logger("main")
 
 
 # Use custom fonts
-def add_app_font():
+def addAppFont():
     spirit_logger.info("Adding application fonts...")
     QtGui.QFontDatabase.addApplicationFont(constants.BAUH_PATH)
     QtGui.QFontDatabase.addApplicationFont(constants.FORTE_PATH)
@@ -32,12 +32,13 @@ if __name__ == '__main__':
     # Stylesheet is optional; title bar colour cannot be changed, and will remain white
     # appContext.app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     # spirit_logger.info("Set Stylesheet: qdarkstyle")
-    add_app_font()
+    addAppFont()
     window = view.MainWindow()  # ViewController module
     spirit_logger.info("Imported MainWindow GUI from ViewController view")
     window.show()
     spirit_logger.info("MainWindow shown")
     exit_code = appContext.app.exec_()  # 2. Invoke appContext.app.exec_()
     spirit_logger.info("Raising system exit...")
+    spirit_logger.info("Shutting down logger...")
     logger.shutdown_logger()
     sys.exit(exit_code)
