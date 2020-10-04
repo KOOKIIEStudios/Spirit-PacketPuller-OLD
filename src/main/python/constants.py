@@ -14,3 +14,12 @@ LOG_FILE = "spirit_packetpuller.log"
 # Engine Constants
 FUNC_DIR = "Functions"
 FUNC_OUTPUT_DIR = "FuncOutput"
+
+# Advanced Options
+NONE = "None"
+INHEADER = "InHeader Analysis"
+AGRESSIVE = "Aggressive Analysis"
+
+# Status
+PROCESSING = "Status: Your files are currently being processed..."
+COMPLETED = "Status: All done!"

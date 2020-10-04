@@ -48,7 +48,7 @@ class OutputListModel(QtCore.QAbstractListModel):
 	def rowCount(self, index):  # required method for models
 		return len(self.files)
 
-	def addFile(self, file):
+	def addFile(self, file):  # Add single file to list
 		if file not in self.files:
 			index = len(self.files)
 			self.beginInsertRows(QtCore.QModelIndex(), index, index)
@@ -60,7 +60,7 @@ class OutputListModel(QtCore.QAbstractListModel):
 		else:
 			spirit_logger.debug(f"Duplicate found. {file} not added.")
 
-	def removeFile(self, file):
+	def removeFile(self, file):  # Remove single file from list
 		size = len(self.files)
 		spirit_logger.debug(f"Size is {size}")
 		for row in range(0, size):

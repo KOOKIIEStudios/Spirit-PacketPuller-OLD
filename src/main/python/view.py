@@ -35,18 +35,21 @@ class MainWindow(QMainWindow):
 
         # LISTENERS
         # toggle Debug Mode
+        spirit_logger.debug("Setting event listeners...")
         self.debugModeCheckBox.stateChanged.connect(lambda: self.loggerState(self.debugModeCheckBox))
         # Manual Input List Refreshes
         self.refreshButton.pressed.connect(lambda: self.loadInputList())
-        spirit_logger.debug("Input List Refreshed!")
         # Item in Input List selected
         self.inputList.selectionModel().selectionChanged.connect(lambda: self.addToQueue())
         # Item in Output List selected
         self.outputList.selectionModel().selectionChanged.connect(lambda: self.removeFromQueue())
         # Select All button
-        self.selectAllButton.pressed.connect((lambda: self.addAllToQueue()))
+        self.selectAllButton.pressed.connect(lambda: self.addAllToQueue())
         # Deselect All button
-        self.deselectAllButton.pressed.connect((lambda: self.removeAllFromQueue()))
+        self.deselectAllButton.pressed.connect(lambda: self.removeAllFromQueue())
+        # Process button
+        self.processButton.pressed.connect(lambda: self.process())
+        spirit_logger.debug("Event listener set")
 
 
     # initialise the UI of the main window
@@ -191,7 +194,11 @@ class MainWindow(QMainWindow):
         self.studioLabel.setText(_translate("MainWindow", "KOOKIIE Studios 2020"))
         self.toolkitLabel.setText(_translate("MainWindow", "SPIRIT SUITE TOOLKIT"))
         spirit_logger.debug("Finished setting UI of MainWindow")
-    # Qt designer copy-pasta ends here
+        # Qt designer copy-pasta ends here
+        self.advancedComboBox.addItem(constants.NONE)
+        self.advancedComboBox.addItem(constants.INHEADER)
+        self.advancedComboBox.addItem(constants.AGRESSIVE)
+        spirit_logger.debug("Advanced options loaded")
 
     def turnLoggerOn(self):
         main_logger.addHandler(logger.get_console_handler())
@@ -221,12 +228,15 @@ class MainWindow(QMainWindow):
         """
 
         # Initialise
+        spirit_logger.debug("Clearing Input List and Loading from file...")
         self.inputListModel.files = []
         try:
             func_list = engine.get_func_list()
             for element in func_list:
                 self.inputListModel.files.append(element)
+            spirit_logger.debug("Input List loaded!")
             self.inputListModel.layoutChanged.emit()  # refresh the list
+            spirit_logger.debug("Layout Change Emit called")
         except OSError as e:
             spirit_logger.error(f"OS Error: {e}")
         except:
@@ -240,16 +250,15 @@ class MainWindow(QMainWindow):
         indexes = self.inputList.selectedIndexes()  # read selection from Input List
         if indexes:
             spirit_logger.debug("Adding to Output List...")
-            spirit_logger.debug("Read Index")
             # Indexes is a list of a single item in single-select mode.
             index = indexes[0]
-            spirit_logger.debug("Take First Index")
             # Write to Output list
             self.outListModel.addFile(self.inputListModel.files[index.row()])
             spirit_logger.debug("File Added")
             self.outListModel.layoutChanged.emit()
             spirit_logger.debug("Layout Change Emit called")
             self.inputList.clearSelection()
+            spirit_logger.debug("Input List selection cleared")
 
     def removeFromQueue(self):
         """
@@ -265,19 +274,18 @@ class MainWindow(QMainWindow):
         """
 
         indexes = self.outputList.selectedIndexes()  # read selection from Output List
-        spirit_logger.debug(f"Indexes read {indexes}")
         if indexes and not self.outListModel.updating:
             spirit_logger.debug("Removing from Output List...")
             # Indexes is a list of a single item in single-select mode.
             self.outListModel.updating = True
             spirit_logger.debug("Set Updating flag to True")
             index = indexes[0]
-            spirit_logger.debug(f"Index taken: {indexes}")
             spirit_logger.debug(f"{self.outListModel.files[index.row()]} will be deleted")
             # WARNING: Deletion!
             self.outListModel.removeFile(self.outListModel.files[index.row()])
             spirit_logger.debug("Item deleted from Output List")
             self.outputList.clearSelection()  # Clear the selection (as it is no longer valid).
+            spirit_logger.debug("Output List selection cleared")
             self.outListModel.updating = False
             spirit_logger.debug("Reset Updating flag back to False")
 
@@ -305,3 +313,14 @@ class MainWindow(QMainWindow):
             self.outListModel.layoutChanged.emit()  # refresh the list
         except:
             spirit_logger.error(f"Failed to clear Output List")
+
+    def process(self):
+        """
+        Process .txt files!
+
+        """
+        # advanced = self.advancedComboBox.currentText()
+        # queue = self.outListModel.files
+        self.statusLabel.setText(constants.PROCESSING)
+        # Business logic to link with engine
+        self.statusLabel.setText(constants.COMPLETED)
