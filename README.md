@@ -70,6 +70,7 @@ Sample GUI:
 
 ![](https://i.imgur.com/58zHVgR.png)
 ![](https://i.imgur.com/7sggcT9.png)
+![Action](https://i.imgur.com/L6qre4m.gifv)
 ---
 # How To Use
 
