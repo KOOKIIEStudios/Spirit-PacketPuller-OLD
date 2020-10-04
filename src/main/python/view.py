@@ -16,14 +16,33 @@ class MainWindow(QMainWindow):
         spirit_logger.debug("Initialising MainWindow...")
         self.setupUi(self)
 
-        self.inputListModel = model.InputListModel()
-        self.loadInputList()  # Load processable files into list
-        self.inputList.setModel(self.inputListModel)
+        # Instantiate Input List
+        try:
+            self.inputListModel = model.InputListModel()
+            self.loadInputList()  # Load processable files into list
+            self.inputList.setModel(self.inputListModel)
+        except:
+            spirit_logger.error("Failed to instantiate input list!")
+
+        # Instantiate Output List
+        try:
+            self.outListModel = model.OutputListModel()
+            self.outputList.setModel(self.outListModel)
+        except:
+            spirit_logger.error("Failed to instantiate output list!")
 
         spirit_logger.debug("Finished setting GUI of MainWindow")
-        self.debugModeCheckBox.stateChanged.connect(lambda: self.loggerState(self.debugModeCheckBox))
 
+        # toggle Debug Mode
+        self.debugModeCheckBox.stateChanged.connect(lambda: self.loggerState(self.debugModeCheckBox))
+        # Manual Input List Refreshes
         self.refreshButton.pressed.connect(lambda: self.loadInputList())
+        spirit_logger.debug("Input List Refreshed!")
+        # Item in Input List selected
+        self.inputList.selectionModel().selectionChanged.connect(lambda: self.addToQueue())
+        # Item in Output List selected
+        self.outputList.selectionModel().selectionChanged.connect(lambda: self.removeFromQueue())
+
 
     # initialise the UI of the main window
     # wholesale imported from Qt Designer - make changes via Qt Designer, not hard-coding
@@ -188,13 +207,71 @@ class MainWindow(QMainWindow):
             self.turnLoggeroff()
 
     def loadInputList(self):
+        """
+        Method to load the list of .txt files in Input folder into the Input list GUI
+
+        Raises:
+            OS Error
+            A generic error
+        """
+
+        # Initialise
+        self.inputListModel.files = []
         try:
             func_list = engine.get_func_list()
             for element in func_list:
                 self.inputListModel.files.append(element)
-            self.inputList.layoutChanged.emit()  # refresh the list
+            self.inputListModel.layoutChanged.emit()  # refresh the list
         except OSError as e:
             spirit_logger.error(f"OS Error: {e}")
         except:
             spirit_logger.error(f"Failed to load list of files from the following directory: {constants.FUNC_DIR}")
 
+    def addToQueue(self):
+        """
+        Adds selection in Input List to Output List
+        """
+
+        indexes = self.inputList.selectedIndexes()  # read selection from Input List
+        if indexes:
+            spirit_logger.debug("Adding to Output List...")
+            spirit_logger.debug("Read Index")
+            # Indexes is a list of a single item in single-select mode.
+            index = indexes[0]
+            spirit_logger.debug("Take First Index")
+            # Write to Output list
+            self.outListModel.addFile(self.inputListModel.files[index.row()])
+            spirit_logger.debug("File Added")
+            self.outListModel.layoutChanged.emit()
+            spirit_logger.debug("Layout Change Emit called")
+            self.inputList.clearSelection()
+
+    def removeFromQueue(self):
+        """
+        Removes selection in Output List
+
+        WARNING: NOT THREAD SAFE
+         self.outListModel.removeFile() contains self.beginRemoveRows()
+         This is a necessary function because it updates the necessary UI elements before the underlying data is changed
+         This prevents asynchronicity.
+         However, because the listener is waiting for a selection change event,
+         the updating of UI triggers removeFromQueue() recursively in an infinite loop.
+         Hence, self.outListModel.updating is used as a global flag to protect this from happening.
+        """
+
+        indexes = self.outputList.selectedIndexes()  # read selection from Output List
+        spirit_logger.debug(f"Indexes read {indexes}")
+        if indexes and not self.outListModel.updating:
+            spirit_logger.debug("Removing from Output List...")
+            # Indexes is a list of a single item in single-select mode.
+            self.outListModel.updating = True
+            spirit_logger.debug("Set Updating flag to True")
+            index = indexes[0]
+            spirit_logger.debug(f"Index taken: {indexes}")
+            spirit_logger.debug(f"{self.outListModel.files[index.row()]} will be deleted")
+            # WARNING: Deletion!
+            self.outListModel.removeFile(self.outListModel.files[index.row()])
+            spirit_logger.debug("Item deleted from Output List")
+            self.outputList.clearSelection()  # Clear the selection (as it is no longer valid).
+            self.outListModel.updating = False
+            spirit_logger.debug("Reset Updating flag back to False")

@@ -2,6 +2,7 @@
 # A GUI Implementation of MaplePacketPuller by Brandon Nguyen
 #
 # This program uses the MVC variant: Model View architecture
+# See https://www.learnpyqt.com/courses/model-views/modelview-architecture/
 
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5 import QtCore, QtGui, QtWidgets
