@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#IntelliJ
+# IntelliJ
 .idea/
+
+# Qt Designer
+Qt_Designer_Drafts/
