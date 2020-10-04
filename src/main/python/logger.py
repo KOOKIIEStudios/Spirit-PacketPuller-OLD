@@ -35,4 +35,5 @@ def get_logger(logger_name):
 
 
 def shutdown_logger():
+	spirit_logger.info("Shutting down logger...")
 	logging.shutdown()

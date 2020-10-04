@@ -4,4 +4,4 @@
 from src.main.python import logger
 spirit_logger = logger.get_logger("main.model")
 
-debug_mode = False
+

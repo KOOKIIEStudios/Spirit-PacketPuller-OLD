@@ -133,3 +133,6 @@ dmypy.json
 
 # Qt Designer
 Qt_Designer_Drafts/
+
+# MaplePacketPuller
+FuncOutput/*

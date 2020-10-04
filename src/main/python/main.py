@@ -39,6 +39,5 @@ if __name__ == '__main__':
     spirit_logger.info("MainWindow shown")
     exit_code = appContext.app.exec_()  # 2. Invoke appContext.app.exec_()
     spirit_logger.info("Raising system exit...")
-    spirit_logger.info("Shutting down logger...")
     logger.shutdown_logger()
     sys.exit(exit_code)
