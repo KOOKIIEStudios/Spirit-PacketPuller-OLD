@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
     # define function calls here
     # initialise the UI of the main window
     # wholesale imported from Qt Designer - make changes via Qt Designer, not hard-coding
+    # Note: replace Qt Designer-generated path for icons and images i.e. for all setPixmap(QtGui.QPixmap(<path>))
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 542)
