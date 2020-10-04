@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
 
         spirit_logger.debug("Finished setting GUI of MainWindow")
 
+        # LISTENERS
         # toggle Debug Mode
         self.debugModeCheckBox.stateChanged.connect(lambda: self.loggerState(self.debugModeCheckBox))
         # Manual Input List Refreshes
@@ -42,6 +43,10 @@ class MainWindow(QMainWindow):
         self.inputList.selectionModel().selectionChanged.connect(lambda: self.addToQueue())
         # Item in Output List selected
         self.outputList.selectionModel().selectionChanged.connect(lambda: self.removeFromQueue())
+        # Select All button
+        self.selectAllButton.pressed.connect((lambda: self.addAllToQueue()))
+        # Deselect All button
+        self.deselectAllButton.pressed.connect((lambda: self.removeAllFromQueue()))
 
 
     # initialise the UI of the main window
@@ -275,3 +280,28 @@ class MainWindow(QMainWindow):
             self.outputList.clearSelection()  # Clear the selection (as it is no longer valid).
             self.outListModel.updating = False
             spirit_logger.debug("Reset Updating flag back to False")
+
+    def addAllToQueue(self):
+        """
+        Method to load the list of .txt files in Input List into the Output List
+
+        Raises:
+            A generic error
+        """
+
+        try:
+            self.outListModel.files = self.inputListModel.files
+            self.outListModel.layoutChanged.emit()  # refresh the list
+        except:
+            spirit_logger.error(f"Failed to assign list of Input to Output List")
+
+    def removeAllFromQueue(self):
+        """
+        Clears the Output List
+
+        """
+        try:
+            self.outListModel.files = []
+            self.outListModel.layoutChanged.emit()  # refresh the list
+        except:
+            spirit_logger.error(f"Failed to clear Output List")
