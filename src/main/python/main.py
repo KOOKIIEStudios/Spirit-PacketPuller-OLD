@@ -13,6 +13,17 @@ import os
 import qdarkstyle
 
 
+# Constants - Resources Paths
+ICON_PATH = "../icons/base/spirit.ico"
+IMAGE_PATH = "../resources/spirit.png"
+# Fonts
+BAUH_PATH = "../resources/BAUHS93.TTF"
+FORTE_PATH = "../resources/FORTE.TTF"
+GARA_PATH = "../resources/GARA.TTF"
+GARABD_PATH = "../resources/GARABD.TTF"
+
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         # Initialise superclass; insert function calls below this line
@@ -35,7 +46,7 @@ class MainWindow(QMainWindow):
         MainWindow.setMaximumSize(QtCore.QSize(800, 542))
         MainWindow.setBaseSize(QtCore.QSize(-1, 0))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/base/spirit.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(ICON_PATH), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -104,7 +115,7 @@ class MainWindow(QMainWindow):
         self.spiritLogo = QtWidgets.QLabel(self.centralwidget)
         self.spiritLogo.setGeometry(QtCore.QRect(640, 30, 141, 81))
         self.spiritLogo.setText("")
-        self.spiritLogo.setPixmap(QtGui.QPixmap("../resources/spirit.png"))
+        self.spiritLogo.setPixmap(QtGui.QPixmap(IMAGE_PATH))
         self.spiritLogo.setObjectName("spiritLogo")
         self.nameLabel = QtWidgets.QLabel(self.centralwidget)
         self.nameLabel.setGeometry(QtCore.QRect(550, 110, 231, 31))
@@ -155,10 +166,20 @@ class MainWindow(QMainWindow):
         self.toolkitLabel.setText(_translate("MainWindow", "SPIRIT SUITE TOOLKIT"))
 
 
+# Use custom fonts
+def add_app_font():
+    QtGui.QFontDatabase.addApplicationFont(BAUH_PATH)
+    QtGui.QFontDatabase.addApplicationFont(FORTE_PATH)
+    QtGui.QFontDatabase.addApplicationFont(GARA_PATH)
+    QtGui.QFontDatabase.addApplicationFont(GARABD_PATH)
+
+
+# Main script sequence
 if __name__ == '__main__':
     appContext = ApplicationContext()  # 1. Instantiate ApplicationContext
     # Stylesheet is optional; title bar colour cannot be changed, and will remain white
     # appContext.app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    add_app_font()
     window = MainWindow()
     window.show()
     exit_code = appContext.app.exec_()  # 2. Invoke appContext.app.exec_()

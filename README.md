@@ -6,6 +6,8 @@ A GUI implementation of [MaplePacketPuller](https://github.com/Bratah123/MaplePa
 Features and known issues have been inherited from [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller).
   *(To be updated as development continues)*
 
+Note on style: This project uses PyQt, which utilises camel case. Hence, the bulk of `main.py` will be in camel case (with the exception of constants), with other non-Qt Python modules being in the typical snake case. 
+
 Developmental Progress: ![15%](https://progress-bar.dev/15)
 
 [Milestones](https://github.com/KOOKIIEStudios/Spirit-PacketPuller/milestones?with_issues=no)
