@@ -8,7 +8,7 @@ from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-from src.main.python import model, view, constants, logger
+import view, constants, logger
 import sys
 import os
 import qdarkstyle
@@ -31,8 +31,8 @@ if __name__ == '__main__':
     appContext = ApplicationContext()  # 1. Instantiate ApplicationContext
     spirit_logger.info("Instantiated ApplicationContext")
     # Stylesheet is optional; title bar colour cannot be changed, and will remain white
-    # appContext.app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    # spirit_logger.info("Set Stylesheet: qdarkstyle")
+    appContext.app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    spirit_logger.info("Set Stylesheet: qdarkstyle")
     addAppFont()
     window = view.MainWindow()  # ViewController module
     spirit_logger.info("Imported MainWindow GUI from ViewController view")

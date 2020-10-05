@@ -3,7 +3,7 @@
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, pyqtSignal
-from src.main.python import logger, view, engine, constants
+import logger
 spirit_logger = logger.get_logger("main.model")
 
 

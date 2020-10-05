@@ -3,8 +3,8 @@
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
-from src.main.python import model, engine, constants, logger
-from src.main.python.main import spirit_logger as main_logger
+import model, engine, constants, logger
+from main import spirit_logger as main_logger
 
 spirit_logger = logger.get_logger("main.view")
 
@@ -200,6 +200,8 @@ class MainWindow(QMainWindow):
         self.advancedComboBox.addItem(constants.INHEADER)
         spirit_logger.debug("Advanced options loaded")
 
+
+
     def turnLoggerOn(self):
         main_logger.addHandler(logger.get_console_handler())
         main_logger.addHandler(logger.get_file_handler())
@@ -241,6 +243,13 @@ class MainWindow(QMainWindow):
             spirit_logger.error(f"OS Error: {e}")
         except:
             spirit_logger.error(f"Failed to load list of files from the following directory: {constants.FUNC_DIR}")
+
+        try:
+            spirit_logger.debug("attempting to re-add logo")
+            spirit_logger.debug(f"Working dir: {engine.get_root_dir()}")
+            self.spiritLogo.setPixmap(QtGui.QPixmap(constants.IMAGE_PATH))
+        except:
+            spirit_logger.error("ERROR: Could not add logo")
 
     def addToQueue(self):
         """

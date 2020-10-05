@@ -136,3 +136,7 @@ Qt_Designer_Drafts/
 
 # MaplePacketPuller
 FuncOutput/*
+
+# fbs
+target/
+__init__.py

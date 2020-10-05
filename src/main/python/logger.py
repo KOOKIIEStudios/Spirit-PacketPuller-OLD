@@ -3,7 +3,7 @@
 import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler
-from src.main.python import constants
+import constants
 FORMATTER = logging.Formatter(constants.FORMAT)
 
 

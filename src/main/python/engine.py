@@ -8,8 +8,8 @@ Refer to the flowchart in MaplePacketPuller for idea of the analysis flow.
 import os
 import time
 
-from src.main.python import logger, constants
-from src.main.python.keywords import *
+import logger, constants
+from keywords import *
 spirit_logger = logger.get_logger("main.engine")
 
 
@@ -47,9 +47,11 @@ def get_root_dir():
 	"""
 
 	spirit_logger.debug("Obtaining project root...")
-	parent = os.path.dirname(os.getcwd())   # main
-	parent = os.path.dirname(parent)   # src
-	parent = os.path.dirname(parent)   # Spirit-PacketPuller
+	parent = os.getcwd()
+	# Different venv sets different cwd. Alternative set:
+	# parent = os.path.dirname(os.getcwd())   # main
+	# parent = os.path.dirname(parent)   # src
+	# parent = os.path.dirname(parent)   # Spirit-PacketPuller
 	spirit_logger.debug(f"Project root: {parent}")
 	return parent
 
