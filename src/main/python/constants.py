@@ -16,7 +16,7 @@ FUNC_DIR = "Functions"
 FUNC_OUTPUT_DIR = "FuncOutput"
 
 # Advanced Options
-NONE = "None"
+NONE = "Normal"
 INHEADER = "InHeader Analysis"
 AGRESSIVE = "Aggressive Analysis"
 

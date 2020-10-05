@@ -179,7 +179,7 @@ class MainWindow(QMainWindow):
     def retranslateUi(self, MainWindow):
         spirit_logger.debug("Setting text of MainWindow...")
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Spirit PacketPuller - alpha v1.0"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Spirit PacketPuller - Alpha v1.1"))
         self.inputLabel.setText(_translate("MainWindow", "Files that can be processed:"))
         self.outputLabel.setText(_translate("MainWindow", "Process queue:"))
         self.selectAllButton.setText(_translate("MainWindow", "Select All"))
@@ -196,8 +196,8 @@ class MainWindow(QMainWindow):
         spirit_logger.debug("Finished setting UI of MainWindow")
         # Qt designer copy-pasta ends here
         self.advancedComboBox.addItem(constants.NONE)
-        self.advancedComboBox.addItem(constants.INHEADER)
         self.advancedComboBox.addItem(constants.AGRESSIVE)
+        self.advancedComboBox.addItem(constants.INHEADER)
         spirit_logger.debug("Advanced options loaded")
 
     def turnLoggerOn(self):

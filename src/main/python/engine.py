@@ -86,8 +86,9 @@ def get_io_dir(io):
 # Inheader Opcode Analysis Engine
 class Inheader:
 	def __init__(self):
-		# Instantiate input path
+		# Instantiate input/output path
 		self.input_path = ""
+		self.output_path = ""
 
 	def get_in_header_ops(self, function):
 		"""
@@ -114,11 +115,19 @@ class Inheader:
 			self.input_path = os.path.join(self.input_path, f"{file}.txt")
 		except:
 			spirit_logger.error("os.path.join() failed to concatenate the arguments!")
+		self.output_path = get_io_dir('o')
+		try:
+			self.output_path = os.path.join(self.output_path, f"{file}_inheader_analysis.txt")
+		except:
+			spirit_logger.error("os.path.join() failed to concatenate the arguments!")
 		opcodes = self.get_in_header_ops(file)
 		spirit_logger.debug(f"Number of opcodes: {len(opcodes)}")
 		spirit_logger.debug(f"Opcodes: {opcodes}")
 		if len(opcodes) < 1:
 			spirit_logger.debug("No in-header opcodes were found for this function.")
+		else:
+			Analysis.write_func_output(self.output_path, str(opcodes))  # save it to an output file
+			spirit_logger.debug(f"Packet structure written to: {self.output_path}")
 
 
 # Main Engine
@@ -274,7 +283,7 @@ class Analysis:
 				spirit_logger.debug("Setting output path to write to...")
 				self.output_path = get_io_dir('o')
 				try:
-					self.output_path = os.path.join(self.output_path, f"{file.upper()}out.txt")
+					self.output_path = os.path.join(self.output_path, f"{file.upper()}_packet_structure.txt")
 				except:
 					spirit_logger.error("os.path.join() failed to concatenate the arguments!")
 				spirit_logger.debug(f"Saving down packet structure to {self.output_path} \n")
