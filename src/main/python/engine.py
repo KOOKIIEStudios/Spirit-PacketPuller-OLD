@@ -83,11 +83,17 @@ def get_io_dir(io):
 		spirit_logger.error("Specify a proper input!")
 	return path
 
+# Inheader Opcode Analysis Engine
+class Inheader:
+	@staticmethod
+	def analyse(file):
+		opcodes = get_inheader_ops(file)
+		if len(opcodes) < 1:
+			spirit_logger.debug("No InHeaders were found for this function.")
 
 # Main Engine
 class Analysis:
 	GET_ALL_DECODES = False
-
 
 	@staticmethod
 	def get_func_name(txt_file_name):
@@ -212,18 +218,24 @@ class Analysis:
 	def process(self, files, options):
 		spirit_logger.info("Core analytical engine logic by Brandon Nguyen")
 		spirit_logger.info("Adapted and re-implemented by: KOOKIIE Studios 2020")
+		inheader = Inheader()
 
 		if options == constants.INHEADER:
-			# do stuff
+			spirit_logger.debug("Start batch processing in-header Opcodes...")
+			for file in files:
+				inheader.analyse(file)
+			spirit_logger.debug("In-header analysis completed")
 		elif options == constants.AGRESSIVE:
 			self.GET_ALL_DECODES = True
+			spirit_logger.debug("Internal flags for aggressive analysis set: True")
 		else:
+			spirit_logger.debug("Start batch processing packet structures...")
 			for file in files:
-				packet_struct = self.analyse_packet_structure(files)
+				packet_struct = self.analyse_packet_structure(file)
 				spirit_logger.debug("Setting output path to write to...")
 				path = get_io_dir('o')
 				try:
-					path = os.path.join(path, f"{files.upper()}out.txt")
+					path = os.path.join(path, f"{file.upper()}out.txt")
 				except:
 					spirit_logger.error("os.path.join() failed to concatenate the arguments!")
 				spirit_logger.debug(f"Saving down packet structure to {path} \n")
@@ -279,4 +291,4 @@ class Analysis:
 				spirit_logger.debug("--------------------------------------------------")
 				self.write_func_output(path, clean_output)  # save it to an output file
 				spirit_logger.debug(f"Packet structure written to: {path}")
-
+			spirit_logger.debug("Packet structure analysis completed")
