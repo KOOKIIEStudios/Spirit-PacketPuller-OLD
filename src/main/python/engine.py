@@ -202,6 +202,12 @@ class Analysis:
 		with open(path) as f:
 			f.write(packet_struct)
 
+	@staticmethod
+	def beautify(path):
+		with open(path) as f:
+			file_list = f.readlines()
+		return [s.rstrip('\n') for s in file_list]
+
 	# Link to be called from ViewController
 	def process(self, files, options):
 		spirit_logger.info("Core analytical engine logic by Brandon Nguyen")
@@ -223,4 +229,54 @@ class Analysis:
 				spirit_logger.debug(f"Saving down packet structure to {path} \n")
 				self.write_func_output(path, packet_struct)  # write the txt file so we can beautify it
 				# removes all the newlines from the txt file we just created
-				packet_struct_arr = beautify(path)
+				packet_struct_arr = self.beautify(path)
+
+				write_output = ""
+
+				for word in packet_struct_arr:  # re adds all the strings to make it cleaner
+					if word != '':
+						write_output += f"{word}\n"
+
+				beautified_arr = write_output.split("\n")
+
+				clean_output = ""
+				beautified_len = len(beautified_arr)
+
+				for i in range(beautified_len):
+					# removes all empty do while() with no decodes inside them
+					if beautified_arr[i] == "do:" and beautified_arr[i + 1] == "while()":
+						beautified_arr[i] = ''
+						beautified_arr[i + 1] = ''
+					if beautified_arr[i] == "  do:" and beautified_arr[i + 1] == "  while()":
+						beautified_arr[i] = ''
+						beautified_arr[i + 1] = ''
+
+				for i in range(beautified_len):
+					# checking for any contents inside a do while loop, and spacing them out for visual aesthetics
+					if beautified_arr[i] == "do:":
+						j = i + 1
+						while beautified_arr[j] != "while()":
+							beautified_arr[j] = f"  {beautified_arr[j]}"
+							j += 1
+					# some functions will cause an index out of range error (comment out this part if so)
+					# TODO: make a flag for this, add a new check box, and link it
+					try:
+						if beautified_arr[i] == "  do:":
+							j = i + 1
+							while beautified_arr[j] != "  while()":
+								beautified_arr[j] = f"   {beautified_arr[j]}"
+								j += 1
+					except Exception as e:
+						spirit_logger.error(f"ERROR ENCOUNTERED: {e}")
+						spirit_logger.error("Aesthetics compromised - decodes() should unaffected")
+
+				for word in beautified_arr:  # re-adds all the strings after removing do while()
+					if word != '':
+						clean_output += f"{word}\n"
+
+				spirit_logger.debug("Cleaned-up packet structure: \n")
+				spirit_logger.debug(clean_output)
+				spirit_logger.debug("--------------------------------------------------")
+				self.write_func_output(path, clean_output)  # save it to an output file
+				spirit_logger.debug(f"Packet structure written to: {path}")
+

@@ -8,7 +8,7 @@ Features and known issues have been inherited from [MaplePacketPuller](https://g
 
 Note on style: This project uses PyQt, which utilises camel case. Hence, part of `main.py` (and the bulk of `view.py`) will be in camel case (with the exception of constants), with other non-Qt Python modules being in the typical snake case. 
 
-Developmental Progress: ![25%](https://progress-bar.dev/25)
+Developmental Progress: ![50%](https://progress-bar.dev/50)
 
 [Milestones](https://github.com/KOOKIIEStudios/Spirit-PacketPuller/milestones?with_issues=no)
 
