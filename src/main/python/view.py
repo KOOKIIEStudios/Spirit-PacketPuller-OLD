@@ -319,8 +319,10 @@ class MainWindow(QMainWindow):
         Process .txt files!
 
         """
-        # advanced = self.advancedComboBox.currentText()
-        # queue = self.outListModel.files
+        advanced = self.advancedComboBox.currentText()
+        queue = self.outListModel.files
         self.statusLabel.setText(constants.PROCESSING)
-        # Business logic to link with engine
+        # pass files and options to engine for processing
+        main_engine = engine.Analysis(queue, advanced)
+        main_engine.process()
         self.statusLabel.setText(constants.COMPLETED)

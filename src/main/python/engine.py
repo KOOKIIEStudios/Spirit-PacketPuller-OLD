@@ -85,8 +85,9 @@ def get_io_dir(io):
 
 # Inheader Opcode Analysis Engine
 class Inheader:
-	# Instantiate input path
-	input_path = ""
+	def __init__(self):
+		# Instantiate input path
+		self.input_path = ""
 
 	def get_in_header_ops(self, function):
 		"""
@@ -94,7 +95,7 @@ class Inheader:
 
 			:Return: String[]
 		"""
-		with open(self.input_path) as f:
+		with open(self.input_path, 'r') as f:
 			file = f.readlines()
 		total_ops = []
 		path, func_name = Analysis.get_func_name(function)
@@ -114,28 +115,31 @@ class Inheader:
 		except:
 			spirit_logger.error("os.path.join() failed to concatenate the arguments!")
 		opcodes = self.get_in_header_ops(file)
+		spirit_logger.debug(f"Number of opcodes: {len(opcodes)}")
+		spirit_logger.debug(f"Opcodes: {opcodes}")
 		if len(opcodes) < 1:
 			spirit_logger.debug("No in-header opcodes were found for this function.")
 
 
 # Main Engine
 class Analysis:
-	GET_ALL_DECODES = False
-	# Instantiate output paths
-	output_path = ""
+	def __init__(self, queue, advanced):
+		self.queue = queue
+		self.advanced = advanced
+		self.GET_ALL_DECODES = False
+		# Instantiate output paths
+		self.output_path = ""
 
 	# Get function name from  first line of .txt file
 	# returns path of file and function name
 	@staticmethod
 	def get_func_name(txt_file_name):
 		path = get_io_dir('i')
-		try:
-			path = os.path.join(path, txt_file_name)
-			with open(path) as file:
-				func_name = file.readline()
-			return path, func_name
-		except:
-			spirit_logger.error("Failed to get function name from txt file!")
+		spirit_logger.debug(f"Path: {path}")
+		path = os.path.join(path, f"{txt_file_name}.txt")
+		with open(path, 'r') as file:
+			func_name = file.readline()
+		return path, func_name
 
 	def check_keyword_and_return(self, word):
 		spirit_logger.debug("Checking for keywords...")
@@ -189,7 +193,7 @@ class Analysis:
 
 		arr_index = 0  # file starts at 0 cause its an array
 		packet_struct += func_name
-		with open(path) as f:
+		with open(path, 'r') as f:
 			file = f.readlines()
 			for line in file:
 				decodes_in_if = []
@@ -236,20 +240,23 @@ class Analysis:
 			Writes a txt file with the packet structure of the given IDA function
 			packet_struct: String
 		"""
-		with open(path) as f:
+
+		with open(path, 'w') as f:
 			f.write(packet_struct)
 
 	@staticmethod
 	def beautify(path):
-		with open(path) as f:
+		with open(path, 'r') as f:
 			file_list = f.readlines()
 		return [s.rstrip('\n') for s in file_list]
 
 	# Link to be called from ViewController
-	def process(self, files, options):
+	def process(self):
 		spirit_logger.info("Core analytical engine logic by Brandon Nguyen")
 		spirit_logger.info("Adapted and re-implemented by: KOOKIIE Studios 2020")
 		inheader = Inheader()
+		files = self.queue
+		options = self.advanced
 
 		if options == constants.INHEADER:
 			spirit_logger.debug("Start batch processing in-header Opcodes...")
@@ -262,6 +269,7 @@ class Analysis:
 		else:
 			spirit_logger.debug("Start batch processing packet structures...")
 			for file in files:
+				spirit_logger.debug(f"Now working on file: {file}")
 				packet_struct = self.analyse_packet_structure(file)
 				spirit_logger.debug("Setting output path to write to...")
 				self.output_path = get_io_dir('o')
