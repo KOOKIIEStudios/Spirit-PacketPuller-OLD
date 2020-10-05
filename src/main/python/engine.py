@@ -85,16 +85,47 @@ def get_io_dir(io):
 
 # Inheader Opcode Analysis Engine
 class Inheader:
-	@staticmethod
-	def analyse(file):
-		opcodes = get_inheader_ops(file)
+	# Instantiate input path
+	input_path = ""
+
+	def get_in_header_ops(self, function):
+		"""
+			Just reads all the lines looking for coutpacket::coutpacket
+
+			:Return: String[]
+		"""
+		with open(self.input_path) as f:
+			file = f.readlines()
+		total_ops = []
+		path, func_name = Analysis.get_func_name(function)
+		spirit_logger.debug(f"Function name obtained: {func_name}")
+		spirit_logger.debug(f"From path: {path}")
+		for line in file:
+			if "coutpacket::coutpacket" in line.lower():
+				spirit_logger.debug(line.strip())
+				total_ops.append(line)
+		return total_ops
+
+	# Called by Main Engine class - starts in-header analysis
+	def analyse(self, file):
+		self.input_path = get_io_dir('i')
+		try:
+			self.input_path = os.path.join(self.input_path, f"{file}.txt")
+		except:
+			spirit_logger.error("os.path.join() failed to concatenate the arguments!")
+		opcodes = self.get_in_header_ops(file)
 		if len(opcodes) < 1:
-			spirit_logger.debug("No InHeaders were found for this function.")
+			spirit_logger.debug("No in-header opcodes were found for this function.")
+
 
 # Main Engine
 class Analysis:
 	GET_ALL_DECODES = False
+	# Instantiate output paths
+	output_path = ""
 
+	# Get function name from  first line of .txt file
+	# returns path of file and function name
 	@staticmethod
 	def get_func_name(txt_file_name):
 		path = get_io_dir('i')
@@ -156,7 +187,7 @@ class Analysis:
 		in_if_statement = False
 		spirit_logger.debug(f"Instantiate in_if_statement as: False")
 
-		arr_index = 0 # file starts at 0 cause its an array
+		arr_index = 0  # file starts at 0 cause its an array
 		packet_struct += func_name
 		with open(path) as f:
 			file = f.readlines()
@@ -233,15 +264,15 @@ class Analysis:
 			for file in files:
 				packet_struct = self.analyse_packet_structure(file)
 				spirit_logger.debug("Setting output path to write to...")
-				path = get_io_dir('o')
+				self.output_path = get_io_dir('o')
 				try:
-					path = os.path.join(path, f"{file.upper()}out.txt")
+					self.output_path = os.path.join(self.output_path, f"{file.upper()}out.txt")
 				except:
 					spirit_logger.error("os.path.join() failed to concatenate the arguments!")
-				spirit_logger.debug(f"Saving down packet structure to {path} \n")
-				self.write_func_output(path, packet_struct)  # write the txt file so we can beautify it
+				spirit_logger.debug(f"Saving down packet structure to {self.output_path} \n")
+				self.write_func_output(self.output_path, packet_struct)  # write the txt file so we can beautify it
 				# removes all the newlines from the txt file we just created
-				packet_struct_arr = self.beautify(path)
+				packet_struct_arr = self.beautify(self.output_path)
 
 				write_output = ""
 
@@ -289,6 +320,6 @@ class Analysis:
 				spirit_logger.debug("Cleaned-up packet structure: \n")
 				spirit_logger.debug(clean_output)
 				spirit_logger.debug("--------------------------------------------------")
-				self.write_func_output(path, clean_output)  # save it to an output file
-				spirit_logger.debug(f"Packet structure written to: {path}")
+				self.write_func_output(self.output_path, clean_output)  # save it to an output file
+				spirit_logger.debug(f"Packet structure written to: {self.output_path}")
 			spirit_logger.debug("Packet structure analysis completed")
