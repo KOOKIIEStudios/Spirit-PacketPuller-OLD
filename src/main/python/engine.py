@@ -5,8 +5,10 @@ Partially adapted from MaplePacketPuller, with addition of utility functions.
 Contains utility functions and packet structure analysis methods.
 """
 import os
+import time
 
 from src.main.python import logger, constants
+from src.main.python.keywords import *
 spirit_logger = logger.get_logger("main.engine")
 
 
@@ -79,3 +81,74 @@ def get_io_dir(io):
 	else:
 		spirit_logger.error("Specify a proper input!")
 	return path
+
+def get_func_name(txt_file_name):
+	path = get_io_dir('i')
+	try:
+		path = os.path.join(path, txt_file_name)
+		with open(path) as file:
+			func_name = file.readline()
+		return path, func_name
+	except:
+		spirit_logger.error("Failed to get function name from txt file!")
+
+def analyse_packet_structure(function):
+	"""
+		Pulls key words from the given function and writes them only showing Decodes in order
+		function : String
+	"""
+	packet_struct = ""
+	start_time = time.time()
+	path, func_name = get_func_name(function)
+	spirit_logger.debug(f"Function Name: {func_name}")
+	spirit_logger.debug(f"Obtained from: {path}")
+
+	in_if_statement = False
+	spirit_logger.debug(f"Instantiate in_if_statement as: False")
+
+	arr_index = 0 # file starts at 0 cause its an array
+	packet_struct += func_name
+	with open(path) as f:
+		file = f.readlines()
+		for line in file:
+			decodes_in_if = []
+			if_or_else = ""
+			# It would prob be easier to print the line like it is in the txt file as it is already spaced
+			if KEYWORDS[5] in line or KEYWORDS[6] in line: # check if we are at an if / else statement
+				if KEYWORDS[5] in line:
+					if_or_else += "if " + check_keyword_and_return(line) + ":"
+				if KEYWORDS[6] in line:
+					if_or_else += "else:"
+				check_next_line = file[arr_index + 1] == "  {\n" # check if its a non nested if
+				if is_decode_func(file[arr_index + 1]): # if the if statement is a one liner condition, we have to check if that one line is a decode
+					spirit_logger.debug(check_keyword_and_return(file[arr_index + 1]))
+				if check_next_line: # if we are in the scope of an if, find when it ends
+					i = 1
+					while file[arr_index + i] != "  }\n":
+						decodes_in_if = add_decode_to_list(decodes_in_if, file[arr_index + i])
+						i += 1
+				in_if_statement = check_next_line
+
+			if len(decodes_in_if) > 0 and in_if_statement:
+				spirit_logger.debug(if_or_else)
+				packet_struct += if_or_else + "\n"
+				for decode in decodes_in_if:
+					spirit_logger.debug(f"  {decode}")
+					packet_struct += "  " + decode + "\n"
+			elif check_keyword_and_print(line): # if we aren't in an if statement print out the decodes normally
+				packet_struct += check_keyword_and_return(line) + "\n"
+
+			arr_index += 1
+
+# Main script sequence for engine
+def main(files, options):
+	spirit_logger.info("Core analytical engine logic by Brandon Nguyen")
+	spirit_logger.info("Adapted and re-implemented by: KOOKIIE Studios 2020")
+	if options == constants.INHEADER:
+		# do stuff
+	elif options == constants.AGRESSIVE:
+		# do stuff
+	else:
+		for file in files:
+			packet_struct = analyse_packet_structure(files)
+			# do stuff
