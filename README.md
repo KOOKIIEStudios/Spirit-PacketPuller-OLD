@@ -1,9 +1,13 @@
 # Spirit-PacketPuller
+NOTE: THIS PROJECT IS DEPRECATED IN FAVOUR OF A FLUTTER APPROACH
+
+(More details to come)
+
 A GUI implementation of [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller), for the ***Spirit Suite*** of server development tools.
 ---
 # Info
 
-Features and known issues have been inherited from [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller).
+Features and known issues have been inherited from [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller), as it retains the same core Python engine.
   *(To be updated as development continues)*
 
 Note on style: This project uses PyQt, which utilises camel case. Hence, part of `main.py` (and the bulk of `view.py`) will be in camel case (with the exception of constants), with other non-Qt Python modules being in the typical snake case. 
@@ -86,14 +90,16 @@ Sample GUI:
 
 ## How To Build
 
-1. In the root of the repository, create a virtual environment using `Python -m venv venv`
+1. In the root of the repository, create a virtual environment using `Python -m venv venv` (or whatever command you have assigned to Python 3.6)
 2. Activate the virtual environment using `call venv\scripts\activate.bat` in Command Prompt
-    - Alternatively, you can activate the virtual environment (venv) using `& venv\scripts\activate.ps1` in Power Shell - which is what I use
+    - Alternatively, you can activate the virtual environment (venv) using `venv\scripts\activate` in Power Shell - which is what I use
     - Note: You can deactivate the venv by using the command `deactivate`
-3. Use `pip install fbs` and `pip install PyQt5==5.9.2` while the venv is activated to install to the virtual environment
-    - Use `pip install wheel`, if the above commands throw errors
-4. You can run the application from source code (while venv is activated) to test using `fbs run`
+3. Use `venv\scripts\pip install fbs` and `venv\scripts\pip install PyQt5==5.9.2` while the venv is activated to install to the virtual environment
+    - Use `venv\scripts\pip install wheel`, if the above commands throw errors
+4. You can run the application from source code (while venv is activated) to test using `venv\scripts\python -m fbs run`
     - Alternatively, configure your IDE with the venv interpreter, to avoid the hassle of needing to activate the venv manually (see below)
+    - Note that you may need to tweak the relative paths in the project depending on the interpretor/environment
+    - Note that `PyCharm` and `fbs` reads the working directory differently
     
 Sample IDE Configuration (PyCharm):
 
