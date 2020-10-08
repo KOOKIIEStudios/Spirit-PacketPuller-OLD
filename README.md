@@ -1,7 +1,7 @@
 # Spirit-PacketPuller
-NOTE: THIS PROJECT IS DEPRECATED IN FAVOUR OF A FLUTTER APPROACH
+NOTE: THIS PROJECT IS DEPRECATED IN FAVOUR OF A FLUTTER APPROACH:
 
-(More details to come)
+[**NEW REPOSITORY**](https://github.com/KOOKIIEStudios/Spirit-PacketPuller) 
 
 A GUI implementation of [MaplePacketPuller](https://github.com/Bratah123/MaplePacketPuller), for the ***Spirit Suite*** of server development tools.
 ---
@@ -13,6 +13,9 @@ Features and known issues have been inherited from [MaplePacketPuller](https://g
 Note on style: This project uses PyQt, which utilises camel case. Hence, part of `main.py` (and the bulk of `view.py`) will be in camel case (with the exception of constants), with other non-Qt Python modules being in the typical snake case. 
 
 Developmental Progress: ![70%](https://progress-bar.dev/70)
+Current Status: HALTED
+ - Noted to run correctly in `venv` both via Python and fbs.
+ - Unable to run correctly after being frozen into executables and/or installers.
 
 [Milestones](https://github.com/KOOKIIEStudios/Spirit-PacketPuller/milestones?with_issues=no)
 
