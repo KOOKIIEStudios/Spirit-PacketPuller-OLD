@@ -12,7 +12,7 @@ Features and known issues have been inherited from [MaplePacketPuller](https://g
 
 Note on style: This project uses PyQt, which utilises camel case. Hence, part of `main.py` (and the bulk of `view.py`) will be in camel case (with the exception of constants), with other non-Qt Python modules being in the typical snake case. 
 
-Developmental Progress: ![70%](https://progress-bar.dev/70)
+Developmental Progress: ![70%](https://progress-bar.dev/70)\
 Current Status: HALTED
  - Noted to run correctly in `venv` both via Python and fbs.
  - Unable to run correctly after being frozen into executables and/or installers.
